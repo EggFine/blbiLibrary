@@ -1,11 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
+name: Java CI with Gradle and Dynamic Release
 
 on:
   push:
@@ -15,31 +8,69 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-
+      contents: write  # This is required for creating releases
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all tags and branches
 
-    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    - name: Build with Gradle Wrapper
-      run: |
-        chmod +x ./gradlew
-        ./gradlew build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: blbiLibrary
-        path: build/libs/*
+      - name: Verify local dependencies
+        run: |
+          if [ -d "libs" ] && [ "$(ls -A libs)" ]; then
+            echo "Local dependencies found in libs directory"
+          else
+            echo "Warning: libs directory is empty or does not exist. Make sure to commit your local JAR files."
+            mkdir -p libs
+          fi
+
+      - name: Build with Gradle Wrapper
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
+
+      - name: Generate Version
+        id: generate_version
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "VERSION=${TIMESTAMP}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-${{ steps.generate_version.outputs.VERSION }}
+          release_name: Release ${{ steps.generate_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Rename JAR file
+        run: |
+          JAR_FILE=$(find ./build/libs -name "*.jar" -type f | head -n 1)
+          NEW_NAME=$(basename $JAR_FILE .jar)-${{ steps.generate_version.outputs.VERSION }}.jar
+          mv $JAR_FILE ./build/libs/$NEW_NAME
+          echo "JAR_PATH=./build/libs/$NEW_NAME" >> $GITHUB_ENV
+          echo "JAR_NAME=$NEW_NAME" >> $GITHUB_ENV
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.JAR_PATH }}
+          asset_name: ${{ env.JAR_NAME }}
+          asset_content_type: application/java-archive

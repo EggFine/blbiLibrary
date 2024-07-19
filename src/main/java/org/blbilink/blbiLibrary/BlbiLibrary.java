@@ -5,6 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BlbiLibrary extends JavaPlugin {
 
+    public static I18n i18n;
+
     @Override
     public void onEnable() {
         // 类库加载事件

@@ -15,6 +15,10 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "sonatype-oss-snapshots1"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
 }
 
 dependencies {

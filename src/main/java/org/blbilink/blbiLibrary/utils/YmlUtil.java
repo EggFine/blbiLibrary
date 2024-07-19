@@ -1,7 +1,7 @@
-package org.blbilink.blbiLibrary;
+package org.blbilink.blbiLibrary.utils;
 
-public class YamlVersionCheck {
-    public static boolean checkYmlVersion(String version1, String version2) {
+public class YmlUtil {
+    public static boolean checkVersion(String version1, String version2) {
         // 分割版本号字符串
         String[] arr1 = version1.split("\\.");
         String[] arr2 = version2.split("\\.");

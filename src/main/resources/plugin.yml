@@ -1,0 +1,4 @@
+name: blbiLibrary
+version: '1.0.0'
+main: org.blbilink.blbiLibrary.BlbiLibrary
+api-version: '1.21'

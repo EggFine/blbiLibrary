@@ -3,6 +3,7 @@ package org.blbilink.blbiLibrary;
 import com.blbilink.bbf.BlbiBasicFunction;
 import com.blbilink.bbf.load.YamlVersionCheck;
 import com.blbilink.bbf.vars.BbfVars;
+import org.blbilink.blbiLibrary.utils.FileUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

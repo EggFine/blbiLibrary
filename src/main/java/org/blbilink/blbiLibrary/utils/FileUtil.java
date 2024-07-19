@@ -1,6 +1,5 @@
-package org.blbilink.blbiLibrary;
+package org.blbilink.blbiLibrary.utils;
 
-import com.blbilink.blbilogin.BlbiLogin;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.YamlConfigurationOptions;
@@ -18,8 +17,13 @@ import java.util.Set;
 import java.util.concurrent.*;
 
 public final class FileUtil {
-    public static void completeFile(String resourceFile, String... notNeedSyncKeys) {
-        Plugin plugin = BlbiLogin.plugin;
+
+
+    /**
+     * Complete configuration(key and value, comments, etc)
+     * @param resourceFile the resource file you want to complete
+     */
+    public static void completeFile(Plugin plugin,String resourceFile, String... notNeedSyncKeys) {
         plugin.getLogger().info("开始更新配置文件");
         if (plugin == null) {
             return;
@@ -32,19 +36,28 @@ public final class FileUtil {
                 plugin.saveResource(resourceFile, false);
                 return;
             }
+            plugin.getLogger().warning("File completion of '" + resourceFile + "' is failed.");
             return;
         }
+
         if (stream == null) {
             plugin.getLogger().warning("File completion of '" + resourceFile + "' is failed.");
             return;
         }
+
         try {
             InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(reader);
-            YamlConfiguration configuration2 = new YamlConfiguration();
-            configuration2.load(file);
+            YamlConfiguration configuration2 = YamlConfiguration.loadConfiguration(file);
+
+            List<String> notSyncKeys = Arrays.asList(notNeedSyncKeys);
 
             for (String key : configuration.getKeys(true)) {
+                boolean needSync = IterableUtil.getIf(notSyncKeys, k -> k != null && (key.equals(k) || key.startsWith(k))).isEmpty();
+                if (!needSync) {
+                    continue;
+                }
+
                 Object value = configuration.get(key);
                 if (value instanceof List<?>) {
                     List<?> list2 = configuration2.getList(key);
@@ -57,26 +70,16 @@ public final class FileUtil {
                 if (!configuration2.contains(key)) {
                     configuration2.set(key, value);
                 }
+
                 if (!configuration.getComments(key).equals(configuration2.getComments(key))) {
                     configuration2.setComments(key, configuration.getComments(key));
                 }
+
                 YamlConfigurationOptions options1 = configuration.options();
                 YamlConfigurationOptions options2 = configuration2.options();
 
                 if (!options2.getHeader().equals(options1.getHeader())) {
                     options2.setHeader(options1.getHeader());
-                }
-            }
-
-            List<String> notSync = Arrays.stream(notNeedSyncKeys).toList();
-
-            for (String key2 : configuration2.getKeys(true)) {
-                boolean b = notSync.contains(key2);
-
-                if (!configuration.contains(key2)) {
-                    if (!b) {
-                        configuration2.set(key2, null);
-                    }
                 }
             }
 
@@ -93,7 +96,7 @@ public final class FileUtil {
      * @param plugin plugin instance
      * @param resourceFile the language file you want to complete
      */
-    public static void completeLangFile(Plugin plugin, String resourceFile, Boolean syncChinese){
+    public static void completeLangFile(Plugin plugin,Boolean syncChinese, String resourceFile){
         File file = new File(plugin.getDataFolder() , resourceFile);
         InputStream stream;
         if (syncChinese){
@@ -102,12 +105,12 @@ public final class FileUtil {
             stream = plugin.getResource(resourceFile);
         }
 
-
         if (!file.exists()) {
             if (stream != null) {
                 plugin.saveResource(resourceFile, false);
                 return;
             }
+            plugin.getLogger().warning("File completion of '" + resourceFile + "' is failed.");
             return;
         }
 
@@ -119,9 +122,8 @@ public final class FileUtil {
         try {
             Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(reader);
+            YamlConfiguration configuration2 = YamlConfiguration.loadConfiguration(file);
 
-            YamlConfiguration configuration2 = new YamlConfiguration();
-            configuration2.load(file);
             Set<String> keys = configuration.getKeys(true);
             for (String key : keys) {
                 Object value = configuration.get(key);
@@ -135,12 +137,9 @@ public final class FileUtil {
                 if (!configuration2.contains(key)) {
                     configuration2.set(key, value);
                 }
-                if(!syncChinese){
-                    if (!configuration.getComments(key).equals(configuration2.getComments(key))) {
-                        configuration2.setComments(key, configuration.getComments(key));
-                    }
+                if (!configuration.getComments(key).equals(configuration2.getComments(key))) {
+                    configuration2.setComments(key, configuration.getComments(key));
                 }
-
             }
             for (String key : configuration2.getKeys(true)) {
                 if (configuration2.contains(key) & !configuration.contains(key)) {

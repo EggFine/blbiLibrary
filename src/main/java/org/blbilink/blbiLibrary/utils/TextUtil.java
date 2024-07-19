@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TextUtil {
     private static final int CHAR_HEIGHT = 4;
-    private class CharacterDefinition {
+    private static class CharacterDefinition {
         String[] art;
 
         CharacterDefinition(String[] art) {
@@ -16,7 +16,7 @@ public class TextUtil {
         }
     }
     private static final Map<Character, CharacterDefinition> ASCII_ART = new HashMap<>();
-    {
+    static{
         ASCII_ART.put('A', new CharacterDefinition(new String[]{
                 "      ",
                 " /\\   ",
@@ -206,7 +206,7 @@ public class TextUtil {
                 + genLogo(logoText)
                 + "\n                                                         " + plugin.getDescription().getVersion() + " " + str;
         if(subTitle != null){
-            logo = logo+"\n"+subTitle+"\n";
+            logo = logo+"\n"+subTitle;
         }
         if(mainAuthor != null){
             logo = logo + "\n主要开发人员(Main Author): ";
@@ -215,7 +215,7 @@ public class TextUtil {
             }
         }
         if(subAuthor !=null){
-            logo = logo + "\n\n次要开发人员(Sub Author): \n";
+            logo = logo + "\n次要开发人员(Sub Author): ";
             for (String author : subAuthor) {
                 logo = logo + author + " ";
             }

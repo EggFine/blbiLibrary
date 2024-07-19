@@ -76,7 +76,7 @@ public class I18n {
             } else {
                 // 插件内没有指定的语言文件，使用默认的 zh_CN.yml
                 plugin.getLogger().warning("指定的语言文件 '" + languageFileName + "' 不存在，尝试使用默认的 zh_CN.yml");
-                plugin.getLogger().warning("The specified language file '" + languageFileName + "' does not exist, try using the default zh_CN.yaml");
+                plugin.getLogger().warning("The specified language file '" + languageFileName + "' does not exist, try using the default zh_CN.yml");
                 languageName = "zh_CN";
                 languageFileName = languageName + ".yml";
                 languageFile = new File(languageFolder, languageFileName);

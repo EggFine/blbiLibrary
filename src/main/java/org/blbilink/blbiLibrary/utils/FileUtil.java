@@ -100,7 +100,7 @@ public final class FileUtil {
         File file = new File(plugin.getDataFolder() , resourceFile);
         InputStream stream;
         if (syncChinese){
-            stream = plugin.getResource("languages/zh_CN.yaml");
+            stream = plugin.getResource("languages/zh_CN.yml");
         }else{
             stream = plugin.getResource(resourceFile);
         }

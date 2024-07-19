@@ -41,5 +41,5 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: blbiLogin
+        name: blbiLibrary
         path: build/libs/*

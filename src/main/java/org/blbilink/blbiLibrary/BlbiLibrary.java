@@ -14,6 +14,10 @@ public final class BlbiLibrary extends JavaPlugin {
         // 类库加载事件
         blbiLibrary = this;
         getLogger().info("blbiLibrary 支持库已加载");
+
+        // 加载 bStats 统计
+        Metrics metrics = new Metrics(this, 22707);
+        metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
     }
 
     @Override

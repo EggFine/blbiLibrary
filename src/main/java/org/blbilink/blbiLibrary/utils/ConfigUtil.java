@@ -13,8 +13,6 @@ import java.util.*;
 
 public class ConfigUtil {
     private final Plugin plugin;
-    public String languageName;
-    public String prefix;
     public File configFile;
     public ConfigUtil(Plugin plugin){
         this.plugin = plugin;
@@ -39,8 +37,6 @@ public class ConfigUtil {
         }else{
             plugin.getLogger().info("未检测到新版本配置文件");
         }
-        languageName  = config.getString("language", "zh_CN") ;
-        prefix = config.getString("prefix", null) ;
         return config;
     }
 }

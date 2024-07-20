@@ -1,6 +1,7 @@
 package org.blbilink.blbiLibrary;
 
 import org.blbilink.blbiLibrary.utils.AnsiColor;
+import org.blbilink.blbiLibrary.utils.ConfigUtil;
 import org.blbilink.blbiLibrary.utils.FoliaUtil;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -8,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class BlbiLibrary extends JavaPlugin {
 
     public static I18n i18n;
-
+    public static ConfigUtil configUtil;
     @Override
     public void onEnable() {
         // 类库加载事件

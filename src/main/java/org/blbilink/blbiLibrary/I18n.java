@@ -1,5 +1,6 @@
 package org.blbilink.blbiLibrary;
 
+import org.blbilink.blbiLibrary.utils.AnsiColor;
 import org.blbilink.blbiLibrary.utils.FileUtil;
 import org.blbilink.blbiLibrary.utils.YmlUtil;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -90,9 +91,9 @@ public class I18n {
         language = YamlConfiguration.loadConfiguration(languageFile);
         FileConfiguration languageConfigNew = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource("languages/" + languageFileName))));
         FileConfiguration cnLanguage = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource("languages/zh_CN.yml"))));
-        plugin.getLogger().warning("your language version" + languageConfigNew.getString("version"));
-        plugin.getLogger().warning("your language last version" + language.getString("version"));
-        plugin.getLogger().warning("Chinese(zh_CN.yml) language last version" + cnLanguage.getString("version"));
+        plugin.getLogger().info("The language pack version number you are currently using is: " + languageConfigNew.getString("version"));
+        plugin.getLogger().info("The latest version of the language pack you are using: " + language.getString("version"));
+        plugin.getLogger().info("The latest version of Simplified Chinese language pack: " + cnLanguage.getString("version"));
         if (YmlUtil.checkVersion(languageConfigNew.getString("version"), language.getString("version"))) {
             language.set("version", languageConfigNew.getString("version"));
             try {
@@ -103,13 +104,13 @@ public class I18n {
             plugin.getLogger().warning("检测到新版本语言文件");
             FileUtil.completeLangFile(plugin, false,"languages/" + languageFileName );
         } else {
-            plugin.getLogger().info("未检测到新版本语言文件");
+            plugin.getLogger().info(AnsiColor.AQUA + "[√] 未检测到新版本语言文件" + AnsiColor.RESET);
         }
         if (YmlUtil.checkVersion(cnLanguage.getString("version"), language.getString("version"))) {
             plugin.getLogger().warning("It is detected that the Chinese(zh_CN.yml) language file is newer than your language file, " +
                     "so we are about to synchronize the new language configuration items of Chinese(zh_CN.yml) to your language file");
             FileUtil.completeLangFile(plugin, true,"languages/" + languageFileName);
         }
-        plugin.getLogger().info(String.format(as("loadedLanguage",false,languageName)) + " | " + as("Language",false));
+        plugin.getLogger().info(AnsiColor.AQUA + "[√] " + String.format(as("loadedLanguage",false,languageName)) + " | " + as("Language",false) + AnsiColor.RESET);
     }
 }

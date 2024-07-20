@@ -203,7 +203,7 @@ public class TextUtil {
 
     public static String getLogo(@Nullable String str, String logoText,@Nullable String subTitle, Plugin plugin, @Nullable List<String> mainAuthor, @Nullable List<String> subAuthor) {
         String logo = "\n\n\n\n\n"
-                + genLogo(logoText)
+                +  genLogo(logoText)
                 + "\n                                                         " + plugin.getDescription().getVersion() + " " + str;
         if(subTitle != null){
             logo = logo+"\n"+subTitle;

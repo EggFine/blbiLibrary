@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.concurrent.TimeUnit;
 
 public class FoliaUtil {
-    public Boolean folia;
+    public Boolean isFolia = false;
     private final BlbiLibrary blbiLibrary = BlbiLibrary.blbiLibrary;
     private final Plugin plugin;
     public FoliaUtil(Plugin plugin){
@@ -30,7 +30,7 @@ public class FoliaUtil {
         return false;
     }
     public void runTaskLater(Runnable task, long delay) {
-        if (!folia) {
+        if (!isFolia) {
             Bukkit.getScheduler().runTaskLater(plugin, task, delay);
         } else {
             try {
@@ -46,7 +46,7 @@ public class FoliaUtil {
     }
 
     public void runTask(Runnable task) {
-        if (!folia) {
+        if (!isFolia) {
             Bukkit.getScheduler().runTask(plugin, task);
         } else {
             try {
@@ -60,7 +60,7 @@ public class FoliaUtil {
     }
 
     public void runTaskAsynchronously(Runnable task) {
-        if (!folia) {
+        if (!isFolia) {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, task);
         } else {
             try {

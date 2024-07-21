@@ -1,15 +1,20 @@
 package org.blbilink.blbiLibrary.utils;
 
 import org.blbilink.blbiLibrary.BlbiLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import java.util.concurrent.TimeUnit;
+
 public class FoliaUtil {
-    private static BlbiLibrary blbiLibrary;
-    public FoliaUtil(BlbiLibrary plugin){
-        this.blbiLibrary = plugin;
+    public Boolean folia;
+    private final BlbiLibrary blbiLibrary = BlbiLibrary.blbiLibrary;
+    private final Plugin plugin;
+    public FoliaUtil(Plugin plugin){
+        this.plugin = plugin;
     }
     // 检查是否是Folia服务端核心
-    public static boolean checkFolia(Plugin plugin, boolean supportFolia) {
+    public boolean checkFolia(boolean supportFolia) {
         try {
             Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
             if(supportFolia){
@@ -23,5 +28,48 @@ public class FoliaUtil {
         } catch (Exception ignored) {
         }
         return false;
+    }
+    public void runTaskLater(Runnable task, long delay) {
+        if (!folia) {
+            Bukkit.getScheduler().runTaskLater(plugin, task, delay);
+        } else {
+            try {
+                // 直接使用 Folia API
+                Bukkit.getAsyncScheduler().runDelayed(plugin, (scheduledTask) -> {
+                    Bukkit.getGlobalRegionScheduler().execute(plugin, task);
+                }, delay * 50, TimeUnit.MILLISECONDS);
+            } catch (Exception e) {
+                plugin.getLogger().severe("Failed to schedule task in Folia: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void runTask(Runnable task) {
+        if (!folia) {
+            Bukkit.getScheduler().runTask(plugin, task);
+        } else {
+            try {
+                // 直接使用 Folia API
+                Bukkit.getGlobalRegionScheduler().execute(plugin, task);
+            } catch (Exception e) {
+                plugin.getLogger().severe("Failed to run task in Folia: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void runTaskAsynchronously(Runnable task) {
+        if (!folia) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, task);
+        } else {
+            try {
+                // 直接使用 Folia API
+                Bukkit.getAsyncScheduler().runNow(plugin, (scheduledTask) -> task.run());
+            } catch (Exception e) {
+                plugin.getLogger().severe("Failed to run async task in Folia: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }

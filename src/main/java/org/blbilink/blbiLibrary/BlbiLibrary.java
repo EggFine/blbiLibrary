@@ -10,8 +10,10 @@ public final class BlbiLibrary extends JavaPlugin {
 
     public static I18n i18n;
     public static ConfigUtil configUtil;
+    public static BlbiLibrary blbiLibrary;
     @Override
     public void onEnable() {
+        blbiLibrary = this;
         // 类库加载事件
         loadFunction();
         getLogger().info("blbiLibrary 支持库已加载");

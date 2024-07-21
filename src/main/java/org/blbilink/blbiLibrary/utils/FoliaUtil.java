@@ -24,6 +24,7 @@ public class FoliaUtil {
                 blbiLibrary.getLogger().warning("[×] 检测到不兼容 Folia 核心的插件 ["+plugin.getName()+"] 请停用该插件！");
                 plugin.getLogger().warning("[×] 插件 ["+plugin.getName()+"] 暂时尚未支持 Folia 请停用该插件！");
             }
+            isFolia = true;
             return true;
         } catch (Exception ignored) {
         }

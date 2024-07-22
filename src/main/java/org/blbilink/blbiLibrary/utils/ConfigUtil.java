@@ -21,7 +21,7 @@ public class ConfigUtil {
     }
     public FileConfiguration loadConfig(String configName) {
         // 加载配置
-        String configPrefix = "["+ configName + "]" ;
+        String configPrefix = "["+ configName + "] " ;
                 plugin.getLogger().info(configPrefix + "开始加载配置文件");
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveDefaultConfig();

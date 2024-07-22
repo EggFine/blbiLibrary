@@ -1,6 +1,6 @@
 name: blbiLibrary
-version: '1.0.2'
+version: '1.0.3'
 main: org.blbilink.blbiLibrary.BlbiLibrary
 api-version: '1.20'
 folia-supported: true
-load: STARTUP
+softdepend: [PlaceholderAPI]

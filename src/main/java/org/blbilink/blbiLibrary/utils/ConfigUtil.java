@@ -21,7 +21,7 @@ public class ConfigUtil {
     }
     public FileConfiguration loadConfig(String configName) {
         // 加载配置
-        plugin.getLogger().info("开始加载配置文件");
+        plugin.getLogger().info("开始加载配置文件" + configName);
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveDefaultConfig();
         configFile = new File(plugin.getDataFolder(), configName);
@@ -30,6 +30,8 @@ public class ConfigUtil {
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         FileConfiguration configNew = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource("config.yml"))));
+        plugin.getLogger().info("The config file version number you are currently using is: " + config.getString("version"));
+        plugin.getLogger().info("The latest version of the config file you are using: " + configNew.getString("version"));
         if (YmlUtil.checkVersion(configNew.getString("version"),config.getString("version"))) {
             config.set("version", configNew.getString("version"));
             try {
@@ -37,10 +39,10 @@ public class ConfigUtil {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            plugin.getLogger().warning("检测到新版本配置文件");
+            plugin.getLogger().warning("["+ configName +"] 检测到新版本配置文件");
             FileUtil.completeFile(plugin,configName, "version");
         }else{
-            plugin.getLogger().info("未检测到新版本配置文件");
+            plugin.getLogger().info(AnsiColor.AQUA + "["+ configName + "] [√] 未检测到新版本配置文件" + AnsiColor.RESET);
         }
         return config;
     }

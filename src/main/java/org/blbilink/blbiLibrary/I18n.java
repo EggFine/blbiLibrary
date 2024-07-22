@@ -91,8 +91,8 @@ public class I18n {
         language = YamlConfiguration.loadConfiguration(languageFile);
         FileConfiguration languageConfigNew = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource("languages/" + languageFileName))));
         FileConfiguration cnLanguage = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource("languages/zh_CN.yml"))));
-        plugin.getLogger().info("The language pack version number you are currently using is: " + languageConfigNew.getString("version"));
-        plugin.getLogger().info("The latest version of the language pack you are using: " + language.getString("version"));
+        plugin.getLogger().info("The language pack version number you are currently using is: " + language.getString("version"));
+        plugin.getLogger().info("The latest version of the language pack you are using: " + languageConfigNew.getString("version"));
         plugin.getLogger().info("The latest version of Simplified Chinese language pack: " + cnLanguage.getString("version"));
         if (YmlUtil.checkVersion(languageConfigNew.getString("version"), language.getString("version"))) {
             language.set("version", languageConfigNew.getString("version"));

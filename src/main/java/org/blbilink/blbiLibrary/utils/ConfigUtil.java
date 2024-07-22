@@ -9,6 +9,8 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class ConfigUtil {
@@ -23,6 +25,9 @@ public class ConfigUtil {
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveDefaultConfig();
         configFile = new File(plugin.getDataFolder(), configName);
+        if(!configFile.exists()){
+            plugin.saveResource(configName, false);
+        }
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         FileConfiguration configNew = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource("config.yml"))));
         if (YmlUtil.checkVersion(configNew.getString("version"),config.getString("version"))) {

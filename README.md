@@ -7,7 +7,7 @@ blbi Plugin's Library
 
 #### 中文专区 [For Chinese]
 
-[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.mcdd.cn%2Fddget%2Fresource%2Finfo%2F2&query=resource.version&prefix=v%20&style=for-the-badge&label=MCDD%E5%B7%B2%E5%8F%91%E5%B8%83&color=hsl(180%2C%2055%25%2C%2049%25))](https://mcdd.cn/resources/2)[![QQ](https://img.shields.io/badge/%E5%8A%A0%E5%85%A5%E7%BE%A4%E8%81%8A-blue?style=for-the-badge&label=QQ&color=white)](https://qm.qq.com/q/TWjF1qyIg2)
+[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.mcdd.cn%2Fddget%2Fresource%2Finfo%2F2&query=resource.version&prefix=v%20&style=for-the-badge&label=MCDD%E5%B7%B2%E5%8F%91%E5%B8%83&color=hsl(180%2C%2055%25%2C%2049%25))](https://mcdd.cn/resources/2) [![QQ](https://img.shields.io/badge/%E5%8A%A0%E5%85%A5%E7%BE%A4%E8%81%8A-blue?style=for-the-badge&label=QQ&color=white)](https://qm.qq.com/q/TWjF1qyIg2)
 
 #### 插件状态 [Plugin Info]
 

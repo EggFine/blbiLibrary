@@ -2,42 +2,38 @@ package org.blbilink.blbiLibrary.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.blbilink.blbiLibrary.BlbiLibrary;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class PapiUtil {
-    private BlbiLibrary blbiLibrary = BlbiLibrary.blbiLibrary;
     private Plugin plugin;
 
     public PapiUtil(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * 解析包含 PAPI 变量的字符串
-     *
-     * @param player 玩家对象
-     * @param text   包含 PAPI 变量的文本
-     * @return 解析后的文本
-     */
-    public String setPlaceholders(Player player, String text) {
+    public String getPlaceholders(Player player, String text) {
         return PlaceholderAPI.setPlaceholders(player, text);
     }
 
-    /**
-     * 注册自定义的 PAPI 扩展
-     *
-     * @param expansion 自定义的 PlaceholderExpansion 实现
-     */
     public void registerExpansion(PlaceholderExpansion expansion) {
         expansion.register();
     }
 
-    /**
-     * 创建一个简单的 PAPI 扩展
-     */
-    public abstract class SimpleExpansion extends PlaceholderExpansion {
+    public PlaceholderExpansion createSimpleExpansion(String identifier, String author, String version, PlaceholderRequestHandler handler) {
+        return new SimpleExpansion(identifier, author, version) {
+            @Override
+            public String onPlaceholderRequest(Player player, String identifier) {
+                return handler.onPlaceholderRequest(player, identifier);
+            }
+        };
+    }
+
+    public interface PlaceholderRequestHandler {
+        String onPlaceholderRequest(Player player, String identifier);
+    }
+
+    public static abstract class SimpleExpansion extends PlaceholderExpansion {
         private final String identifier;
         private final String author;
         private final String version;
@@ -63,7 +59,6 @@ public class PapiUtil {
             return version;
         }
 
-        @Override
-        public abstract String onPlaceholderRequest(Player player, String identifier);
+        // 这里不再需要声明 onPlaceholderRequest 为抽象方法，因为它已经在 PlaceholderExpansion 中声明为抽象方法了
     }
 }

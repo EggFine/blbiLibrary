@@ -23,8 +23,8 @@ public class PluginUtil {
      * @return 如果返回true则表示已加载，否则反之
      */
     public boolean isPluginLoaded(String pluginName) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-        if (plugin != null && plugin.isEnabled()) {
+        Plugin plugin_check = Bukkit.getPluginManager().getPlugin(pluginName);
+        if (plugin_check != null && plugin_check.isEnabled()) {
             plugins.add(pluginName);
             blbiLibrary.getLogger().info(AnsiColor.AQUA + "[√] 已检测到 " + pluginName + " 插件， [" + plugin.getName() + "] 插件使用其作为软依赖" + AnsiColor.RESET);
             plugin.getLogger().info(AnsiColor.AQUA + "[√] 已检测到 " + pluginName + " 前置，正在进行 Hook" + AnsiColor.RESET);

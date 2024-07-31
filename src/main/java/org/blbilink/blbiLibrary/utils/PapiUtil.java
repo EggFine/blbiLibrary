@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class PapiUtil {
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public PapiUtil(Plugin plugin) {
         this.plugin = plugin;

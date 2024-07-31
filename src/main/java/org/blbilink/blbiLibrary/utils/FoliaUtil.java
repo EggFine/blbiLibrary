@@ -33,8 +33,8 @@ public class FoliaUtil {
             }
             return true;
         } catch (Exception ignored) {
+            return false;
         }
-        return false;
     }
 
     public void runTaskAsync(Plugin plugin, Runnable run) {
@@ -53,7 +53,7 @@ public class FoliaUtil {
             BukkitRunnable bukkitRunnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    run.accept(() -> this.cancel());
+                    run.accept(this::cancel);
                 }
             };
             BukkitTask task = bukkitRunnable.runTaskTimerAsynchronously(plugin, delay, period);
@@ -158,7 +158,6 @@ public class FoliaUtil {
                     Method cancelMethod = task.getClass().getDeclaredMethod("cancel");
                     cancelMethod.setAccessible(true);
                     cancelMethod.invoke(task);
-                    cancelled = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -171,18 +170,13 @@ public class FoliaUtil {
         }
     }
 
-    private static class BukkitCancellable implements Cancellable {
-        private final BukkitTask task;
-
-        BukkitCancellable(BukkitTask task) {
-            this.task = task;
-        }
+    private record BukkitCancellable(BukkitTask task) implements Cancellable {
 
         @Override
-        public void cancel() {
-            task.cancel();
+            public void cancel() {
+                task.cancel();
+            }
         }
-    }
 
     private static class DummyCancellable implements Cancellable {
         static final DummyCancellable INSTANCE = new DummyCancellable();

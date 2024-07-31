@@ -1,10 +1,6 @@
 package org.blbilink.blbiLibrary.utils;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.file.YamlConfigurationOptions;
-import org.bukkit.plugin.Plugin;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,16 +10,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConfigurationOptions;
+import org.bukkit.plugin.Plugin;
 
 public final class FileUtil {
 
 
     /**
      * Complete configuration(key and value, comments, etc)
+     *
      * @param resourceFile the resource file you want to complete
      */
-    public static void completeFile(Plugin plugin,String resourceFile, String... notNeedSyncKeys) {
+    public static void completeFile(Plugin plugin, String resourceFile, String... notNeedSyncKeys) {
         plugin.getLogger().info("开始更新配置文件");
         if (plugin == null) {
             return;
@@ -93,15 +97,16 @@ public final class FileUtil {
     /**
      * Complete language file (keys and values, comments, etc.)
      * FORCE SYNC
-     * @param plugin plugin instance
+     *
+     * @param plugin       plugin instance
      * @param resourceFile the language file you want to complete
      */
-    public static void completeLangFile(Plugin plugin,Boolean syncChinese, String resourceFile){
-        File file = new File(plugin.getDataFolder() , resourceFile);
+    public static void completeLangFile(Plugin plugin, Boolean syncChinese, String resourceFile) {
+        File file = new File(plugin.getDataFolder(), resourceFile);
         InputStream stream;
-        if (syncChinese){
+        if (syncChinese) {
             stream = plugin.getResource("languages/zh_CN.yml");
-        }else{
+        } else {
             stream = plugin.getResource(resourceFile);
         }
 
@@ -155,11 +160,12 @@ public final class FileUtil {
 
     /**
      * Delete a directory
+     *
      * @param dirFile the directory
      * @return result
      */
     @CanIgnoreReturnValue
-    public static boolean deleteDir(File dirFile){
+    public static boolean deleteDir(File dirFile) {
         Callable<Boolean> callable = () -> {
             if (!dirFile.exists() || !dirFile.isDirectory() || dirFile.listFiles() == null) {
                 return false;
@@ -195,11 +201,12 @@ public final class FileUtil {
 
     /**
      * Delete a file
+     *
      * @param file the file
      * @return result
      */
     @CanIgnoreReturnValue
-    public static boolean deleteFile(File file){
+    public static boolean deleteFile(File file) {
         boolean flag = false;
 
         if (file.isFile() && file.exists()) {

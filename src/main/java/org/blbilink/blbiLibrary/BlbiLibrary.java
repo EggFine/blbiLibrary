@@ -1,9 +1,7 @@
 package org.blbilink.blbiLibrary;
 
-import org.blbilink.blbiLibrary.utils.AnsiColor;
 import org.blbilink.blbiLibrary.utils.ConfigUtil;
 import org.blbilink.blbiLibrary.utils.FoliaUtil;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BlbiLibrary extends JavaPlugin {
@@ -11,6 +9,7 @@ public final class BlbiLibrary extends JavaPlugin {
     public static I18n i18n;
     public static ConfigUtil configUtil;
     public static BlbiLibrary blbiLibrary;
+
     @Override
     public void onEnable() {
         blbiLibrary = this;
@@ -28,7 +27,7 @@ public final class BlbiLibrary extends JavaPlugin {
 
     }
 
-    private void loadFunction(){
+    private void loadFunction() {
         new FoliaUtil(this);
     }
 }

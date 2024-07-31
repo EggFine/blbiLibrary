@@ -1,5 +1,8 @@
 package org.blbilink.blbiLibrary.utils;
 
+import java.lang.reflect.Method;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import org.blbilink.blbiLibrary.BlbiLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -7,10 +10,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.lang.reflect.Method;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 public class FoliaUtil {
     public Boolean isFolia = false;

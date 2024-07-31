@@ -1,13 +1,14 @@
 package org.blbilink.blbiLibrary.utils;
-import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
+import org.bukkit.plugin.Plugin;
 
 public class TextUtil {
     private static final int CHAR_HEIGHT = 4;
+
     private static class CharacterDefinition {
         String[] art;
 
@@ -15,8 +16,10 @@ public class TextUtil {
             this.art = art;
         }
     }
+
     private static final Map<Character, CharacterDefinition> ASCII_ART = new HashMap<>();
-    static{
+
+    static {
         ASCII_ART.put('A', new CharacterDefinition(new String[]{
                 "      ",
                 " /\\   ",
@@ -201,20 +204,20 @@ public class TextUtil {
         return result.toString();
     }
 
-    public static String getLogo(@Nullable String str, String logoText,@Nullable String subTitle, Plugin plugin, @Nullable List<String> mainAuthor, @Nullable List<String> subAuthor) {
+    public static String getLogo(@Nullable String str, String logoText, @Nullable String subTitle, Plugin plugin, @Nullable List<String> mainAuthor, @Nullable List<String> subAuthor) {
         String logo = "\n\n\n\n\n"
-                +  genLogo(logoText)
+                + genLogo(logoText)
                 + "\n                                                         " + plugin.getDescription().getVersion() + " " + str;
-        if(subTitle != null){
-            logo = logo+"\n"+subTitle;
+        if (subTitle != null) {
+            logo = logo + "\n" + subTitle;
         }
-        if(mainAuthor != null){
+        if (mainAuthor != null) {
             logo = logo + "\n主要开发人员(Main Author): ";
             for (String author : mainAuthor) {
                 logo = logo + author + " ";
             }
         }
-        if(subAuthor !=null){
+        if (subAuthor != null) {
             logo = logo + "\n次要开发人员(Sub Author): ";
             for (String author : subAuthor) {
                 logo = logo + author + " ";

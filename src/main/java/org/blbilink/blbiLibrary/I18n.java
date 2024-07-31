@@ -1,12 +1,5 @@
 package org.blbilink.blbiLibrary;
 
-import org.blbilink.blbiLibrary.utils.AnsiColor;
-import org.blbilink.blbiLibrary.utils.FileUtil;
-import org.blbilink.blbiLibrary.utils.YmlUtil;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +7,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.blbilink.blbiLibrary.utils.AnsiColor;
+import org.blbilink.blbiLibrary.utils.FileUtil;
+import org.blbilink.blbiLibrary.utils.YmlUtil;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 public class I18n {
     private FileConfiguration language;
@@ -102,15 +101,15 @@ public class I18n {
                 throw new RuntimeException(e);
             }
             plugin.getLogger().warning("检测到新版本语言文件");
-            FileUtil.completeLangFile(plugin, false,"languages/" + languageFileName );
+            FileUtil.completeLangFile(plugin, false, "languages/" + languageFileName);
         } else {
             plugin.getLogger().info(AnsiColor.AQUA + "[√] 未检测到新版本语言文件" + AnsiColor.RESET);
         }
         if (YmlUtil.checkVersion(cnLanguage.getString("version"), language.getString("version"))) {
             plugin.getLogger().warning("It is detected that the Chinese(zh_CN.yml) language file is newer than your language file, " +
                     "so we are about to synchronize the new language configuration items of Chinese(zh_CN.yml) to your language file");
-            FileUtil.completeLangFile(plugin, true,"languages/" + languageFileName);
+            FileUtil.completeLangFile(plugin, true, "languages/" + languageFileName);
         }
-        plugin.getLogger().info(AnsiColor.AQUA + "[√] " + String.format(as("loadedLanguage",false,languageName)) + " | " + as("Language",false) + AnsiColor.RESET);
+        plugin.getLogger().info(AnsiColor.AQUA + "[√] " + String.format(as("loadedLanguage", false, languageName)) + " | " + as("Language", false) + AnsiColor.RESET);
     }
 }

@@ -1,11 +1,10 @@
 package org.blbilink.blbiLibrary.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.blbilink.blbiLibrary.BlbiLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PluginUtil {
     private final BlbiLibrary blbiLibrary = BlbiLibrary.blbiLibrary;

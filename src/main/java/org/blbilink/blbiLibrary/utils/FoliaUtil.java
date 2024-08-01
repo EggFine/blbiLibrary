@@ -3,6 +3,9 @@ package org.blbilink.blbiLibrary.utils;
 import java.lang.reflect.Method;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+
+import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.blbilink.blbiLibrary.BlbiLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -121,7 +124,6 @@ public class FoliaUtil {
     }
 
     public void runTaskLater(Plugin plugin, Runnable task, long delay) {
-        delay = Math.max(delay, 1L);
         if (!isFolia) {
             Bukkit.getScheduler().runTaskLater(plugin, task, delay);
         } else {
@@ -130,9 +132,9 @@ public class FoliaUtil {
                 getSchedulerMethod.setAccessible(true);
                 Object globalRegionScheduler = getSchedulerMethod.invoke(Bukkit.getServer());
                 Class<?> schedulerClass = globalRegionScheduler.getClass();
-                Method executeMethod = schedulerClass.getDeclaredMethod("runDelayed", Plugin.class, Runnable.class, long.class);
-                executeMethod.setAccessible(true);
-                executeMethod.invoke(globalRegionScheduler, plugin, task, delay);
+                Method runDelayedMethod = schedulerClass.getDeclaredMethod("runDelayed", Plugin.class, Consumer.class, long.class);
+                Consumer<Object> taskWrapper = (scheduledTask) -> task.run();
+                runDelayedMethod.invoke(globalRegionScheduler, plugin, taskWrapper, delay);
             } catch (Exception e) {
                 e.printStackTrace();
             }
